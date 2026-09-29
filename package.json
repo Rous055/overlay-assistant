@@ -1,0 +1,34 @@
+{
+  "name": "overlay-assistant",
+  "version": "0.1.0",
+  "description": "Персональный оверлей-ассистент: почта, ссылки, скриншоты, заметки, расписание, hh.ru, Moodle",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build:win": "electron-builder --win nsis"
+  },
+  "author": "Rous",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^31.0.0",
+    "electron-builder": "^24.13.3"
+  },
+  "dependencies": {
+    "imapflow": "^1.0.171",
+    "mailparser": "^3.7.1"
+  },
+  "build": {
+    "appId": "com.rous.overlayassistant",
+    "productName": "OverlayAssistant",
+    "win": {
+      "target": "nsis",
+      "icon": "assets/icon.png"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "runAfterFinish": true
+    }
+  }
+}

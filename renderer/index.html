@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<title>Overlay Assistant</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="panel">
+    <nav class="tabs" id="tabs">
+      <button class="tab active" data-tab="mail"><span class="ic">✉</span><span>почта</span></button>
+      <button class="tab" data-tab="links"><span class="ic">🔗</span><span>ссылки</span></button>
+      <button class="tab" data-tab="screenshots"><span class="ic">▢</span><span>скрины</span></button>
+      <button class="tab" data-tab="notes"><span class="ic">✎</span><span>заметки</span></button>
+      <button class="tab" data-tab="schedule"><span class="ic">▦</span><span>расписание</span></button>
+      <button class="tab" data-tab="moodle"><span class="ic">▥</span><span>moodle</span></button>
+    </nav>
+
+    <section class="content" id="content">
+      <div class="view active" data-view="mail">
+        <div id="mailSetup" class="mail-setup">
+          <p class="placeholder">Подключите Яндекс.Почту, чтобы видеть письма здесь.</p>
+          <input type="email" id="mailEmail" placeholder="you@yandex.ru" autocomplete="username" />
+          <input type="password" id="mailPassword" placeholder="пароль приложения" autocomplete="current-password" />
+          <button id="mailConnectBtn">Подключить</button>
+          <p class="hint">Нужен пароль приложения (не обычный пароль от Яндекс ID) — создаётся в настройках Яндекс ID, раздел «Пароли приложений».</p>
+        </div>
+
+        <div id="mailList" class="mail-list" style="display:none;"></div>
+
+        <div id="mailMessage" class="mail-message" style="display:none;">
+          <button id="mailBackBtn" class="back-btn">← назад</button>
+          <div id="mailMessageContent"></div>
+        </div>
+      </div>
+      <div class="view" data-view="links">
+        <div class="links-header">
+          <span class="links-header-title">разделы</span>
+          <button class="inbox-badge" id="inboxBadge" style="display:none;"></button>
+        </div>
+
+        <div class="links-folders" id="linksFolders"></div>
+
+        <div class="links-add" id="linksAdd">
+          <button class="link-btn" id="linksAddToggle">+ новый раздел</button>
+          <div class="links-add-form" id="linksAddForm" style="display:none;">
+            <input type="text" id="linksAddInput" placeholder="Название раздела" maxlength="30" />
+            <button id="linksAddConfirm">Добавить</button>
+          </div>
+        </div>
+
+        <div class="links-list-view" id="linksListView" style="display:none;">
+          <button class="back-btn" id="linksBackBtn">← назад</button>
+          <div class="links-list" id="linksList"></div>
+        </div>
+      </div>
+      <div class="view" data-view="screenshots">
+        <div class="shots-toolbar" id="shotsToolbar" style="display:none;">
+          <button class="link-btn" id="shotOpenBtn">открыть</button>
+          <button class="link-btn" id="shotCopyBtn">копировать</button>
+          <button class="link-btn" id="shotFolderBtn">в папке</button>
+        </div>
+        <div class="shots-grid" id="shotsGrid"></div>
+        <button class="shots-fab" id="shotsFab">Все скрины</button>
+      </div>
+      <div class="view" data-view="notes">
+        <div class="notes-list-pane" id="notesListPane">
+          <div class="notes-toolbar">
+            <button class="link-btn" id="notesAddBtn">+ новая заметка</button>
+          </div>
+          <div class="notes-list" id="notesList"></div>
+        </div>
+
+        <div class="notes-editor-pane" id="notesEditorPane" style="display:none;">
+          <div class="notes-editor-toolbar">
+            <button class="back-btn" id="notesBackBtn">← назад</button>
+            <button class="link-btn" id="notesDeleteBtn">удалить</button>
+          </div>
+          <textarea id="notesTextarea" class="notes-textarea" placeholder="Текст заметки..."></textarea>
+        </div>
+      </div>
+      <div class="view" data-view="schedule">
+        <div class="hh-tabs sched-mode-tabs">
+          <button class="hh-tab active" id="schedModePersonal">личное</button>
+          <button class="hh-tab" id="schedModeStudy">учёба</button>
+        </div>
+
+        <div id="schedPersonalPane">
+          <div class="sched-nav">
+            <button class="link-btn" id="schedPrevBtn">←</button>
+            <div class="sched-date" id="schedDateLabel"></div>
+            <button class="link-btn" id="schedNextBtn">→</button>
+          </div>
+
+          <div class="sched-list" id="schedList"></div>
+
+          <div class="links-add">
+            <button class="link-btn" id="schedAddToggle">+ добавить дело</button>
+            <div class="links-add-form sched-add-form" id="schedAddForm" style="display:none;">
+              <input type="time" id="schedTimeInput" />
+              <input type="text" id="schedTitleInput" placeholder="Что нужно сделать" maxlength="120" />
+              <button id="schedAddConfirm">Добавить</button>
+            </div>
+          </div>
+        </div>
+
+        <div id="schedStudyPane" style="display:none;">
+          <div class="links-list" id="schedStudyList"></div>
+        </div>
+      </div>
+      <div class="view" data-view="moodle">
+        <div id="moodleSetup" class="mail-setup">
+          <p class="placeholder">Войди с учётными данными Moodle (обычно совпадают с университетскими).</p>
+          <input type="text" id="moodleSiteUrl" placeholder="Адрес Moodle (например https://moodle.vsu.ru)" />
+          <input type="text" id="moodleUsername" placeholder="Логин" autocomplete="username" />
+          <input type="password" id="moodlePassword" placeholder="Пароль" autocomplete="current-password" />
+          <button id="moodleLoginBtn">Войти</button>
+          <p class="hint">Если выдаст ошибку про отключённый веб-сервис — значит у Moodle университета не включён доступ для мобильного приложения, нужно будет попросить это у администратора Moodle.</p>
+        </div>
+
+        <div id="moodleMain" style="display:none;">
+          <div class="links-header">
+            <div class="hh-tabs" id="moodleTabs">
+              <button class="hh-tab active" data-tab="deadlines">дедлайны</button>
+              <button class="hh-tab" data-tab="grades">оценки</button>
+              <button class="hh-tab" data-tab="announcements">объявления</button>
+              <button class="hh-tab" data-tab="materials">материалы</button>
+            </div>
+            <button class="link-btn" id="moodleLogoutBtn">выйти</button>
+          </div>
+          <div class="links-list" id="moodleContent"></div>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script src="renderer.js"></script>
+  <script src="mail.js"></script>
+  <script src="links.js"></script>
+  <script src="screenshots.js"></script>
+  <script src="schedule.js"></script>
+  <script src="notes.js"></script>
+  <script src="moodle.js"></script>
+</body>
+</html>
